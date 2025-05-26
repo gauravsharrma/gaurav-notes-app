@@ -26,27 +26,33 @@ document.addEventListener('DOMContentLoaded', () => {
     await fetch(`/api/notes/${id}`, { method: 'DELETE' });
     loadNotes();
   };
+window.viewNote = (rawContent) => {
+  const html = `
+    <html>
+      <head>
+        <title>Note Preview</title>
+        <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet" />
+        <style>
+          body {
+            padding: 2rem;
+            font-family: 'Merriweather', serif;
+          }
+          .prose {
+            max-width: 60ch;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="prose">${marked.parse(decodeURIComponent(rawContent))}</div>
+      </body>
+    </html>
+  `;
+  const newTab = window.open();
+  newTab.document.write(html);
+  newTab.document.close();
+};
 
-  window.viewNote = (rawContent) => {
-    const html = `
-      <html>
-        <head>
-          <title>Note Preview</title>
-          <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-          <style>
-            body { padding: 2rem; font-family: sans-serif; }
-            .prose { max-width: 60ch; }
-          </style>
-        </head>
-        <body>
-          <div class="prose">${marked.parse(decodeURIComponent(rawContent))}</div>
-        </body>
-      </html>
-    `;
-    const newTab = window.open();
-    newTab.document.write(html);
-    newTab.document.close();
-  };
 
   saveBtn.addEventListener('click', async () => {
     const content = document.getElementById('noteContent').value;
