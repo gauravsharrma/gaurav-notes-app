@@ -1,4 +1,14 @@
 const express = require('express');
+
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static frontend files (index.html, CSS, JS)
+app.use(express.static(__dirname));
+
 const cors = require('cors');
 const { Pool } = require('pg');
 require('dotenv').config();
