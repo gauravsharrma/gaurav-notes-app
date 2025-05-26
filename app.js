@@ -25,40 +25,34 @@ document.addEventListener('DOMContentLoaded', () => {
         viewBtn.className = 'text-green-600';
         viewBtn.textContent = 'View Full Note';
         viewBtn.onclick = () => {
+          const newTab = window.open();
+          if (!newTab) return;
+
+          const doc = newTab.document;
           const safeContent = note.content
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;');
 
-          const html = `
-            <html>
-              <head>
-                <title>Note Preview</title>
-                <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-                <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet" />
-                <style>
-                  body {
-                    font-family: 'Merriweather', serif;
-                    display: flex;
-                    justify-content: center;
-                    padding: 3rem;
-                    background: #fdfdfd;
-                  }
-                  .content {
-                    max-width: 60ch;
-                  }
-                </style>
-              </head>
-              <body>
-                <div class="content prose"></div>
-              </body>
-            </html>
-          `;
+          doc.open();
+          doc.write('<!DOCTYPE html>');
+          doc.write('<html><head><title>Note Preview</title>');
+          doc.write('<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">');
+          doc.write('<link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">');
+          doc.write(`<style>
+            body {
+              font-family: 'Merriweather', serif;
+              display: flex;
+              justify-content: center;
+              padding: 3rem;
+              background: #fdfdfd;
+            }
+            .content {
+              max-width: 60ch;
+            }
+          </style></head><body><div class="content prose"></div></body></html>`);
+          doc.close();
 
-          const newTab = window.open();
-          newTab.document.write(html);
-          newTab.document.close();
-
-          const contentDiv = newTab.document.querySelector('.content');
+          const contentDiv = doc.querySelector('.content');
           contentDiv.innerHTML = marked.parse(safeContent);
         };
 
