@@ -26,7 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
     await fetch(`/api/notes/${id}`, { method: 'DELETE' });
     loadNotes();
   };
-window.viewNote = (rawContent) => {
+
+  window.viewNote = (rawContent) => {
   const html = `
     <html>
       <head>
@@ -35,16 +36,19 @@ window.viewNote = (rawContent) => {
         <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet" />
         <style>
           body {
-            padding: 2rem;
             font-family: 'Merriweather', serif;
+            display: flex;
+            justify-content: center;
+            padding: 3rem;
+            background: #fdfdfd;
           }
-          .prose {
+          .content {
             max-width: 60ch;
           }
         </style>
       </head>
       <body>
-        <div class="prose">${marked.parse(decodeURIComponent(rawContent))}</div>
+        <div class="content prose">${marked.parse(decodeURIComponent(rawContent))}</div>
       </body>
     </html>
   `;
