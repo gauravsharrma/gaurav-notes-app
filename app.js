@@ -25,6 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
         viewBtn.className = 'text-green-600';
         viewBtn.textContent = 'View Full Note';
         viewBtn.onclick = () => {
+          const safeContent = note.content
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+
           const html = `
             <html>
               <head>
@@ -49,14 +53,12 @@ document.addEventListener('DOMContentLoaded', () => {
               </body>
             </html>
           `;
+
           const newTab = window.open();
           newTab.document.write(html);
           newTab.document.close();
 
           const contentDiv = newTab.document.querySelector('.content');
-          const safeContent = note.content
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
           contentDiv.innerHTML = marked.parse(safeContent);
         };
 
