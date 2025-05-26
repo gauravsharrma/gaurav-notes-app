@@ -1,5 +1,5 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Merriweather', serif;
 }
 
 pre {
@@ -9,7 +9,6 @@ pre {
   border-radius: 5px;
 }
 
-/* Ensure truncation works */
 .truncate {
   white-space: nowrap;
   overflow: hidden;
