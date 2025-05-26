@@ -6,10 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const res = await fetch('/api/notes');
     const notes = await res.json();
     notesList.innerHTML = notes.map(n => `
-      <div class="bg-white p-4 rounded shadow">
-        <div class="markdown">${marked.parse(n.content)}</div>
+      <div class="bg-white p-4 rounded shadow overflow-hidden">
+        <div class="markdown truncate h-6 overflow-hidden">${marked.parse(n.content)}</div>
         <div class="text-sm text-gray-500 mt-2">Tags: ${n.tags.join(', ')}</div>
-        <button onclick="editNote('${n.id}', \`${n.content}\`, '${n.tags.join(',')}')" class="text-blue-500">Edit</button>
+        <button onclick="viewNote(\`${encodeURIComponent(n.content)}\`)" class="text-green-600">View Full Note</button>
+        <button onclick="editNote('${n.id}', \`${n.content}\`, '${n.tags.join(',')}')" class="text-blue-500 ml-2">Edit</button>
         <button onclick="deleteNote('${n.id}')" class="text-red-500 ml-2">Delete</button>
       </div>
     `).join('');
@@ -26,9 +27,30 @@ document.addEventListener('DOMContentLoaded', () => {
     loadNotes();
   };
 
+  window.viewNote = (rawContent) => {
+    const html = `
+      <html>
+        <head>
+          <title>Note Preview</title>
+          <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+          <style>
+            body { padding: 2rem; font-family: sans-serif; }
+            .prose { max-width: 60ch; }
+          </style>
+        </head>
+        <body>
+          <div class="prose">${marked.parse(decodeURIComponent(rawContent))}</div>
+        </body>
+      </html>
+    `;
+    const newTab = window.open();
+    newTab.document.write(html);
+    newTab.document.close();
+  };
+
   saveBtn.addEventListener('click', async () => {
     const content = document.getElementById('noteContent').value;
-    const tags = document.getElementById('noteTags').value.split(',').map(t => t.trim());
+    const tags = document.getElementById('noteTags').value.split(',').map(t => t.trim()).filter(Boolean);
     const id = saveBtn.dataset.editing;
     const method = id ? 'PUT' : 'POST';
     const url = id ? `/api/notes/${id}` : '/api/notes';
