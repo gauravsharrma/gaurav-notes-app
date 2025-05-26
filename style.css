@@ -1,9 +1,17 @@
 body {
   font-family: 'Segoe UI', sans-serif;
 }
+
 pre {
   background: #f3f3f3;
   padding: 0.5rem;
   overflow-x: auto;
   border-radius: 5px;
+}
+
+/* Ensure truncation works */
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
