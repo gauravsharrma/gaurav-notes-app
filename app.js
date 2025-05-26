@@ -54,7 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
           newTab.document.close();
 
           const contentDiv = newTab.document.querySelector('.content');
-          contentDiv.innerHTML = marked.parse(note.content);
+          const safeContent = note.content
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+          contentDiv.innerHTML = marked.parse(safeContent);
         };
 
         const editBtn = document.createElement('button');
@@ -98,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!content) return alert('Note content cannot be empty.');
 
     const method = id ? 'PUT' : 'POST';
-    const url = id ? `/api/notes/${id}` : '/api/notes';
+    const url = id ? `/api/notes/${id}` : '/api/notes`;
 
     await fetch(url, {
       method,
