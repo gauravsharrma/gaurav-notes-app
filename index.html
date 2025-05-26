@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Markdown Notes</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <main class="p-6 max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-4">📝 My Notes</h1>
+    
+    <div class="mb-4">
+      <textarea id="noteContent" placeholder="Write your note using markdown..." class="w-full p-3 rounded border border-gray-300"></textarea>
+      <input id="noteTags" type="text" placeholder="Tags (comma separated)" class="mt-2 w-full p-2 rounded border border-gray-300" />
+      <button id="saveNote" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded mt-2">Save</button>
+    </div>
+
+    <div id="notesList" class="space-y-4"></div>
+  </main>
+  <script src="app.js" defer></script>
+</body>
+</html>
